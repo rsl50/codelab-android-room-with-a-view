@@ -2,11 +2,12 @@ package com.robsonlima.myapplication.room
 
 import androidx.room.*
 import com.robsonlima.myapplication.model.Word
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WordDAO {
     @Query("SELECT * FROM word_table ORDER BY word ASC")
-    fun getAlphabetizedWords(): List<Word>
+    fun getAlphabetizedWords(): Flow<List<Word>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(word: Word)
