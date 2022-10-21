@@ -5,6 +5,9 @@ import com.robsonlima.myapplication.model.Word
 import com.robsonlima.myapplication.repository.WordRepository
 import kotlinx.coroutines.launch
 
+/**
+ * View Model to keep a reference to the word repository and an up-to-date list of all words.
+ */
 class WordViewModel(private val repository: WordRepository) : ViewModel() {
 
     // Using LiveData and caching what allWords returns has several benefits:

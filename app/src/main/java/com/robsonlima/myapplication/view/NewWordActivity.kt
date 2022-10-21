@@ -9,6 +9,10 @@ import android.widget.Button
 import android.widget.EditText
 import com.robsonlima.myapplication.R
 
+/**
+ * Activity for entering a word.
+ */
+
 class NewWordActivity : AppCompatActivity() {
 
     private lateinit var editWordView: EditText

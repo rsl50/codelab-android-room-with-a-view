@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.robsonlima.myapplication.model.Word
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -27,7 +28,9 @@ public abstract class WordRoomDatabase : RoomDatabase() {
          */
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            INSTANCE?.let { database -> scope.launch {
+            // If you want to keep the data through app restarts,
+            // comment out the following line.
+            INSTANCE?.let { database -> scope.launch(Dispatchers.IO) {
                 populateDatabase(database.wordDAO())
             }}
         }
@@ -60,7 +63,11 @@ public abstract class WordRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     WordRoomDatabase::class.java,
                     "word_database"
-                ).addCallback(WordDatabaseCallback(scope)).build()
+                )   // Wipes and rebuilds instead of migrating if no Migration object.
+                    // Migration is not part of this codelab.
+                    .fallbackToDestructiveMigration()
+                    .addCallback(WordDatabaseCallback(scope))
+                    .build()
                 INSTANCE = instance
                 // return instance
                 instance
